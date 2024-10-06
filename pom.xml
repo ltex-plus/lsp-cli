@@ -39,7 +39,7 @@
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
     <main.class>org.bsplines.lspcli.LspCliLauncher</main.class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.jupiter.version>5.8.2</junit.jupiter.version>
+    <junit.jupiter.version>5.11.2</junit.jupiter.version>
   </properties>
   <dependencies>
     <dependency>
@@ -50,22 +50,22 @@
     <dependency>
       <groupId>org.eclipse.lsp4j</groupId>
       <artifactId>org.eclipse.lsp4j</artifactId>
-      <version>0.12.0</version>
+      <version>0.23.1</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.8.9</version>
+      <version>2.11.0</version>
     </dependency>
     <dependency>
       <groupId>org.fusesource.jansi</groupId>
       <artifactId>jansi</artifactId>
-      <version>2.4.0</version>
+      <version>2.4.1</version>
     </dependency>
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>4.6.2</version>
+      <version>4.7.6</version>
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
@@ -108,7 +108,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.8.0</version>
         <executions>
           <execution>
             <?m2e execute onConfiguration?>
@@ -121,7 +121,7 @@
       <plugin>
         <groupId>com.github.ozsie</groupId>
         <artifactId>detekt-maven-plugin</artifactId>
-        <version>1.19.1</version>
+        <version>1.23.7</version>
         <configuration>
           <buildUponDefaultConfig>true</buildUponDefaultConfig>
           <config>${project.basedir}/.detekt.yml</config>
@@ -138,7 +138,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.5.1</version>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -177,7 +177,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -215,7 +215,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
         <executions>
           <execution>
             <id>ktlint</id>
@@ -300,7 +300,7 @@ if %ERROR_CODE% EQU 0 set ERROR_CODE=1</replacevalue>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>3.7.1</version>
         <configuration>
           <descriptors>
             <descriptor>.assembly.xml</descriptor>
