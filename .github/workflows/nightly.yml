@@ -31,7 +31,7 @@ jobs:
           python-version: "3.12"
 
       - name: "Install Python Dependencies"
-        run: "python -m pip install --upgrade pip && pip install semver==2.13.0"
+        run: "python -m pip install --upgrade pip && pip install semver"
 
       - name: "Set LSP_CLI_VERSION"
         run: "echo \"LSP_CLI_VERSION=$(python -c \"import datetime; import re; print('{}.nightly.{}'.format(re.search(r'<version>(.*?)(?:\\\\.develop)?</version>', open('pom.xml', 'r').read()).group(1), datetime.datetime.today().strftime('%Y-%m-%d')), end='')\")\" >> $GITHUB_ENV"
