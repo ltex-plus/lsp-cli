@@ -8,11 +8,12 @@ import java.nio.file.Path
 class LspCliSettings(
   val settingsFilePath: Path? = null,
 ) {
-  val jsonSettings: JsonObject = if (settingsFilePath != null) {
-    JsonParser.parseString(FileIo.readFileWithException(settingsFilePath)).asJsonObject
-  } else {
-    JsonObject()
-  }
+  val jsonSettings: JsonObject =
+    if (settingsFilePath != null) {
+      JsonParser.parseString(FileIo.readFileWithException(settingsFilePath)).asJsonObject
+    } else {
+      JsonObject()
+    }
 
   fun getValue(vararg keys: String): JsonElement? {
     var jsonElement: JsonElement = this.jsonSettings

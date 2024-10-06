@@ -79,7 +79,11 @@ class Checker(
     return numberOfMatches
   }
 
-  private fun checkFile(path: Path, languageId: String, text: String): Int {
+  private fun checkFile(
+    path: Path,
+    languageId: String,
+    text: String,
+  ): Int {
     val uri: String = path.toUri().toString()
     val document = LspCliTextDocumentItem(uri, languageId, 1, text)
     Logging.logger.info(I18n.format("checkingFile", path.toString()))
@@ -103,15 +107,17 @@ class Checker(
     }
 
     val documentId = TextDocumentIdentifier(uri)
-    val terminalWidth: Int = run {
-      val terminalWidth: Int = AnsiConsole.getTerminalWidth()
-      if (terminalWidth >= 2) terminalWidth else Integer.MAX_VALUE
-    }
+    val terminalWidth: Int =
+      run {
+        val terminalWidth: Int = AnsiConsole.getTerminalWidth()
+        if (terminalWidth >= 2) terminalWidth else Integer.MAX_VALUE
+      }
 
     for (diagnostic: Diagnostic in diagnostics) {
       val codeActionTitles = ArrayList<String>()
       val codeActionResult: List<Either<Command, CodeAction>> =
-          this.languageClient.languageServer.textDocumentService.codeAction(
+        this.languageClient.languageServer.textDocumentService
+          .codeAction(
             CodeActionParams(documentId, diagnostic.range, CodeActionContext(listOf(diagnostic))),
           ).get()
 
@@ -153,25 +159,42 @@ class Checker(
       val fromPos: Int = document.convertPosition(fromPosition)
       val toPos: Int = document.convertPosition(toPosition)
 
-      val color: Color = when (diagnostic.severity) {
-        DiagnosticSeverity.Error -> Color.RED
-        DiagnosticSeverity.Warning -> Color.YELLOW
-        DiagnosticSeverity.Information -> Color.BLUE
-        DiagnosticSeverity.Hint -> Color.BLUE
-        else -> Color.BLUE
-      }
-      val typeString: String = when (diagnostic.severity) {
-        DiagnosticSeverity.Error -> "error"
-        DiagnosticSeverity.Warning -> "warning"
-        DiagnosticSeverity.Information -> "info"
-        DiagnosticSeverity.Hint -> "hint"
-        else -> "info"
-      }
+      val color: Color =
+        when (diagnostic.severity) {
+          DiagnosticSeverity.Error -> Color.RED
+          DiagnosticSeverity.Warning -> Color.YELLOW
+          DiagnosticSeverity.Information -> Color.BLUE
+          DiagnosticSeverity.Hint -> Color.BLUE
+          else -> Color.BLUE
+        }
+      val typeString: String =
+        when (diagnostic.severity) {
+          DiagnosticSeverity.Error -> "error"
+          DiagnosticSeverity.Warning -> "warning"
+          DiagnosticSeverity.Information -> "info"
+          DiagnosticSeverity.Hint -> "hint"
+          else -> "info"
+        }
 
       val diagnosticCode: String = diagnostic.code?.get()?.toString() ?: ""
-      val ansi: Ansi = (Ansi.ansi().bold().a(path.toString()).a(":")
-          .a(fromPosition.line + 1).a(":").a(fromPosition.character + 1).a(": ")
-          .fg(color).a(typeString).a(":").reset().bold().a(" ").a(diagnostic.message))
+      val ansi: Ansi = (
+        Ansi
+          .ansi()
+          .bold()
+          .a(path.toString())
+          .a(":")
+          .a(fromPosition.line + 1)
+          .a(":")
+          .a(fromPosition.character + 1)
+          .a(": ")
+          .fg(color)
+          .a(typeString)
+          .a(":")
+          .reset()
+          .bold()
+          .a(" ")
+          .a(diagnostic.message)
+      )
       if (diagnosticCode.isNotEmpty()) ansi.a(" [").a(diagnosticCode).a("]")
       ansi.reset()
       println(ansi)
@@ -181,9 +204,14 @@ class Checker(
       val line: String = text.substring(lineStartPos, lineEndPos)
 
       println(
-        Ansi.ansi().a(line.substring(0, fromPos - lineStartPos)).bold().fg(color)
-        .a(line.substring(fromPos - lineStartPos, toPos - lineStartPos)).reset()
-        .a(line.substring(toPos - lineStartPos).replaceFirst(TRAILING_WHITESPACE_REGEX, "")),
+        Ansi
+          .ansi()
+          .a(line.substring(0, fromPos - lineStartPos))
+          .bold()
+          .fg(color)
+          .a(line.substring(fromPos - lineStartPos, toPos - lineStartPos))
+          .reset()
+          .a(line.substring(toPos - lineStartPos).replaceFirst(TRAILING_WHITESPACE_REGEX, "")),
       )
 
       var indentationSize = guessIndentationSize(text, lineStartPos, fromPos, terminalWidth)
@@ -195,7 +223,14 @@ class Checker(
       val indentation: String = " ".repeat(indentationSize)
 
       for (codeActionTitle: String in codeActionTitles) {
-        println(Ansi.ansi().a(indentation).fg(Color.GREEN).a(codeActionTitle).reset())
+        println(
+          Ansi
+            .ansi()
+            .a(indentation)
+            .fg(Color.GREEN)
+            .a(codeActionTitle)
+            .reset(),
+        )
       }
     }
 

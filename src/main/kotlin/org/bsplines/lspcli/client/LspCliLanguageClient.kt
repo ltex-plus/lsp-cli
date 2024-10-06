@@ -37,13 +37,14 @@ class LspCliLanguageClient(
   clientConfigurationFilePath: Path? = null,
 ) : LanguageClient {
   val languageServerProcess: Process =
-      startLanguageServerProcess(serverCommandLine, serverWorkingDirPath)
+    startLanguageServerProcess(serverCommandLine, serverWorkingDirPath)
   val languageServer: LanguageServer = initializeLanguageServer()
-  val clientConfiguration: JsonObject = if (clientConfigurationFilePath != null) {
-    JsonParser.parseString(FileIo.readFileWithException(clientConfigurationFilePath)).asJsonObject
-  } else {
-    JsonObject()
-  }
+  val clientConfiguration: JsonObject =
+    if (clientConfigurationFilePath != null) {
+      JsonParser.parseString(FileIo.readFileWithException(clientConfigurationFilePath)).asJsonObject
+    } else {
+      JsonObject()
+    }
 
   private val _diagnosticsMap: MutableMap<String, List<Diagnostic>> = HashMap()
   val diagnosticsMap: Map<String, List<Diagnostic>>
@@ -63,9 +64,7 @@ class LspCliLanguageClient(
 
   override fun showMessageRequest(
     params: ShowMessageRequestParams?,
-  ): CompletableFuture<MessageActionItem> {
-    return CompletableFuture.completedFuture(MessageActionItem())
-  }
+  ): CompletableFuture<MessageActionItem> = CompletableFuture.completedFuture(MessageActionItem())
 
   override fun logMessage(params: MessageParams?) {
   }
@@ -92,7 +91,7 @@ class LspCliLanguageClient(
 
       if (serverWorkingDirPath != null) {
         absoluteServerCommandLine[0] =
-            serverWorkingDirPath.resolve(absoluteServerCommandLine[0]).toString()
+          serverWorkingDirPath.resolve(absoluteServerCommandLine[0]).toString()
       }
 
       Logging.logger.info(
@@ -104,7 +103,7 @@ class LspCliLanguageClient(
       )
 
       val processBuilder: ProcessBuilder =
-          ProcessBuilder(absoluteServerCommandLine).directory(serverWorkingDirPath?.toFile())
+        ProcessBuilder(absoluteServerCommandLine).directory(serverWorkingDirPath?.toFile())
       val process: Process = processBuilder.start()
       Runtime.getRuntime().addShutdownHook(Thread(process::destroy))
 

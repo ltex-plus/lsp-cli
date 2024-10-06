@@ -26,7 +26,7 @@ import kotlin.system.exitProcess
   mixinStandardHelpOptions = true,
   showDefaultValues = true,
   versionProvider = VersionProvider::class,
-  description = ["lsp-cli - CLI language client for LSP language servers"]
+  description = ["lsp-cli - CLI language client for LSP language servers"],
 )
 class LspCliLauncher : Callable<Int> {
   @CommandLine.Option(
@@ -34,12 +34,12 @@ class LspCliLauncher : Callable<Int> {
     paramLabel = "<string>",
     required = true,
     description = [
-      "Required. Command line to start the language server, starting with the path of its "
-      + "executable. If you want to supply arguments to the language server, separate them with "
-      + "spaces. If the path of the executable or one of the arguments contain spaces, you can "
-      + "escape them by using '\\ ' instead. In .lsp-cli.json, this option can either be "
-      + "specified as an array of arguments or as a string with space-separated arguments.",
-    ]
+      "Required. Command line to start the language server, starting with the path of its " +
+        "executable. If you want to supply arguments to the language server, separate them with " +
+        "spaces. If the path of the executable or one of the arguments contain spaces, you can " +
+        "escape them by using '\\ ' instead. In .lsp-cli.json, this option can either be " +
+        "specified as an array of arguments or as a string with space-separated arguments.",
+    ],
   )
   var serverCommandLineString: String? = null
 
@@ -49,9 +49,9 @@ class LspCliLauncher : Callable<Int> {
     names = ["--server-working-directory"],
     paramLabel = "<directory>",
     description = [
-      "Working directory for --server-command-line. If omitted, use the parent directory of "
-      + "`.lsp-cli.json` if given, otherwise use the current working directory.",
-    ]
+      "Working directory for --server-command-line. If omitted, use the parent directory of " +
+        "`.lsp-cli.json` if given, otherwise use the current working directory.",
+    ],
   )
   var serverWorkingDirPath: Path? = null
 
@@ -59,9 +59,9 @@ class LspCliLauncher : Callable<Int> {
     names = ["--client-configuration"],
     paramLabel = "<file>",
     description = [
-      "Use the client configuration stored in the JSON file <file>. The format is usually nested "
-      + "JSON objects (e.g., {\"latex\": {\"commands\": ...}}).",
-    ]
+      "Use the client configuration stored in the JSON file <file>. The format is usually nested " +
+        "JSON objects (e.g., {\"latex\": {\"commands\": ...}}).",
+    ],
   )
   var clientConfigurationFilePath: Path? = null
 
@@ -69,7 +69,7 @@ class LspCliLauncher : Callable<Int> {
     names = ["--hide-commands"],
     description = [
       "Hide commands in lists of code actions for diagnostics, only show quick fixes.",
-    ]
+    ],
   )
   var hideCommands: Boolean = false
 
@@ -77,7 +77,7 @@ class LspCliLauncher : Callable<Int> {
     names = ["--verbose"],
     description = [
       "Write to standard error output what is being done.",
-    ]
+    ],
   )
   var verbose: Boolean = false
 
@@ -85,10 +85,10 @@ class LspCliLauncher : Callable<Int> {
     paramLabel = "<path>",
     arity = "1..*",
     description = [
-      "Paths of files or directories to check. "
-      + "Directories are traversed recursively for supported file types. "
-      + "If - is given, standard input will be checked as plain text.",
-    ]
+      "Paths of files or directories to check. " +
+        "Directories are traversed recursively for supported file types. " +
+        "If - is given, standard input will be checked as plain text.",
+    ],
   )
   var inputFilePaths: List<Path> = emptyList()
 
@@ -99,7 +99,7 @@ class LspCliLauncher : Callable<Int> {
       this.serverCommandLineString = parseResult.matchedOptionValue("--server-command-line", null)
     } else {
       val jsonElement: JsonElement? =
-          lspCliSettings.getValue("defaultValues", "--server-command-line")
+        lspCliSettings.getValue("defaultValues", "--server-command-line")
 
       if (jsonElement?.isJsonArray == true) {
         this.serverCommandLineList = jsonElement.asJsonArray.map { it.asString }
@@ -108,41 +108,49 @@ class LspCliLauncher : Callable<Int> {
       }
     }
 
-    this.serverWorkingDirPath = if (parseResult.hasMatchedOption("--server-working-directory")) {
-      parseResult.matchedOptionValue("--server-working-directory", null)
-    } else {
-      val string: String? = lspCliSettings.getValue(
-        "defaultValues",
-        "--server-working-directory",
-      )?.asString
-
-      if (string != null) {
-        Path.of(string)
+    this.serverWorkingDirPath =
+      if (parseResult.hasMatchedOption("--server-working-directory")) {
+        parseResult.matchedOptionValue("--server-working-directory", null)
       } else {
-        lspCliSettings.settingsFilePath?.toAbsolutePath()?.parent
+        val string: String? =
+          lspCliSettings
+            .getValue(
+              "defaultValues",
+              "--server-working-directory",
+            )?.asString
+
+        if (string != null) {
+          Path.of(string)
+        } else {
+          lspCliSettings.settingsFilePath?.toAbsolutePath()?.parent
+        }
       }
-    }
 
-    this.clientConfigurationFilePath = if (parseResult.hasMatchedOption("--client-configuration")) {
-      parseResult.matchedOptionValue("--client-configuration", null)
-    } else {
-      lspCliSettings.getValue(
-        "defaultValues",
-        "--client-configuration",
-      )?.asString?.let { Path.of(it) }
-    }
+    this.clientConfigurationFilePath =
+      if (parseResult.hasMatchedOption("--client-configuration")) {
+        parseResult.matchedOptionValue("--client-configuration", null)
+      } else {
+        lspCliSettings
+          .getValue(
+            "defaultValues",
+            "--client-configuration",
+          )?.asString
+          ?.let { Path.of(it) }
+      }
 
-    this.hideCommands = if (parseResult.hasMatchedOption("--hide-commands")) {
-      parseResult.matchedOptionValue("--hide-commands", false)
-    } else {
-      lspCliSettings.getValue("defaultValues", "--hide-commands")?.asBoolean ?: false
-    }
+    this.hideCommands =
+      if (parseResult.hasMatchedOption("--hide-commands")) {
+        parseResult.matchedOptionValue("--hide-commands", false)
+      } else {
+        lspCliSettings.getValue("defaultValues", "--hide-commands")?.asBoolean ?: false
+      }
 
-    this.verbose = if (parseResult.hasMatchedOption("--verbose")) {
-      parseResult.matchedOptionValue("--verbose", false)
-    } else {
-      lspCliSettings.getValue("defaultValues", "--verbose")?.asBoolean ?: false
-    }
+    this.verbose =
+      if (parseResult.hasMatchedOption("--verbose")) {
+        parseResult.matchedOptionValue("--verbose", false)
+      } else {
+        lspCliSettings.getValue("defaultValues", "--verbose")?.asBoolean ?: false
+      }
 
     if (parseResult.matchedPositionals().isNotEmpty()) {
       this.inputFilePaths = parseResult.matchedPositionals()[0].getValue()
@@ -153,21 +161,22 @@ class LspCliLauncher : Callable<Int> {
     if (this.verbose) Logging.setLogLevel(Level.INFO)
 
     val serverCommandLine: List<String> = (
-      this.serverCommandLineList ?: this.serverCommandLineString?.let {
-        serverCommandLineString: String ->
-        NON_ESCAPED_SPACE_REGEX.split(serverCommandLineString).map {
-          ESCAPED_SPACE_REGEX.replace(it, " ")
-        }
-      } ?: throw IllegalArgumentException(
+      this.serverCommandLineList
+        ?: this.serverCommandLineString?.let { serverCommandLineString: String ->
+          NON_ESCAPED_SPACE_REGEX.split(serverCommandLineString).map {
+            ESCAPED_SPACE_REGEX.replace(it, " ")
+          }
+        } ?: throw IllegalArgumentException(
         I18n.format("requiredArgumentNotSpecified", "--server-command-line"),
       )
     )
 
-    val client = LspCliLanguageClient(
-      serverCommandLine,
-      this.serverWorkingDirPath,
-      this.clientConfigurationFilePath,
-    )
+    val client =
+      LspCliLanguageClient(
+        serverCommandLine,
+        this.serverWorkingDirPath,
+        this.clientConfigurationFilePath,
+      )
 
     try {
       val checker = Checker(client, hideCommands = this.hideCommands)
@@ -227,12 +236,13 @@ class LspCliLauncher : Callable<Int> {
 
     private fun getLspCliSettingsFilePath(): Path? {
       val environmentVariable: String = System.getenv("LSP_CLI_JSON_SETTINGS_PATH") ?: ""
-      val path: Path? = if (environmentVariable.isNotEmpty()) {
-        Path.of(environmentVariable)
-      } else {
-        val appHome: String = System.getProperty("app.home", "")
-        if (appHome.isNotEmpty()) Path.of(appHome, "bin") else null
-      }
+      val path: Path? =
+        if (environmentVariable.isNotEmpty()) {
+          Path.of(environmentVariable)
+        } else {
+          val appHome: String = System.getProperty("app.home", "")
+          if (appHome.isNotEmpty()) Path.of(appHome, "bin") else null
+        }
 
       return if (path == null) {
         null
@@ -249,9 +259,9 @@ class LspCliLauncher : Callable<Int> {
     private fun createCommandLine(lspCliSettings: LspCliSettings): CommandLine {
       val defaultValues: Map<String, Any>? = lspCliSettings.getValueAsMap("defaultValues")
       val hiddenArguments: List<String>? =
-          lspCliSettings.getValueAsListOfString("helpMessage", "hiddenArguments")
+        lspCliSettings.getValueAsListOfString("helpMessage", "hiddenArguments")
       val visibleArguments: List<String>? =
-          lspCliSettings.getValueAsListOfString("helpMessage", "visibleArguments")
+        lspCliSettings.getValueAsListOfString("helpMessage", "visibleArguments")
 
       val classCommandSpec = CommandLine.Model.CommandSpec.forAnnotatedObject(LspCliLauncher())
       val commandSpec = CommandLine.Model.CommandSpec.create()
@@ -259,7 +269,7 @@ class LspCliLauncher : Callable<Int> {
       commandSpec.usageMessage(classCommandSpec.usageMessage())
 
       val usageMessageDescription: String? =
-          lspCliSettings.getValue("helpMessage", "description")?.asString
+        lspCliSettings.getValue("helpMessage", "description")?.asString
 
       if (usageMessageDescription != null) {
         commandSpec.usageMessage().description(usageMessageDescription)
@@ -272,8 +282,8 @@ class LspCliLauncher : Callable<Int> {
       }
 
       for (
-        positionalParamSpec: CommandLine.Model.PositionalParamSpec
-        in classCommandSpec.positionalParameters()
+      positionalParamSpec: CommandLine.Model.PositionalParamSpec
+      in classCommandSpec.positionalParameters()
       ) {
         commandSpec.addPositional(positionalParamSpec)
       }
@@ -300,11 +310,12 @@ class LspCliLauncher : Callable<Int> {
         }
       }
 
-      val hidden = if (visibleArguments != null) {
-        !visibleArguments.contains(classOptionSpec.longestName())
-      } else {
-        hiddenArguments?.contains(classOptionSpec.longestName()) ?: false
-      }
+      val hidden =
+        if (visibleArguments != null) {
+          !visibleArguments.contains(classOptionSpec.longestName())
+        } else {
+          hiddenArguments?.contains(classOptionSpec.longestName()) ?: false
+        }
 
       optionSpecBuilder.hidden(hidden)
       return optionSpecBuilder.build()
