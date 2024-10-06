@@ -15,8 +15,10 @@ import tempfile
 import urllib.parse
 import urllib.request
 import zipfile
+import os
+import stat
 
-javaVersion = "11.0.12+7"
+javaVersion = "21.0.4+7"
 
 
 
@@ -73,10 +75,10 @@ def createBinaryArchive(platform: str, arch: str) -> None:
 def downloadJava(tmpDirPath: pathlib.Path, lspCliDirPath: pathlib.Path,
       platform: str, arch: str) -> str:
   javaArchiveExtension = (".zip" if platform == "windows" else ".tar.gz")
-  javaArchiveName = (f"OpenJDK11U-jdk_{arch}_{platform}_hotspot_"
+  javaArchiveName = (f"OpenJDK21U-jdk_{arch}_{platform}_hotspot_"
       f"{javaVersion.replace('+', '_')}{javaArchiveExtension}")
 
-  javaUrl = ("https://github.com/adoptium/temurin11-binaries/releases/download/"
+  javaUrl = ("https://github.com/adoptium/temurin21-binaries/releases/download/"
       f"jdk-{urllib.parse.quote_plus(javaVersion)}/{javaArchiveName}")
   javaArchivePath = lspCliDirPath.joinpath(javaArchiveName)
   print(f"Downloading JDK from '{javaUrl}' to '{javaArchivePath}'...")
@@ -103,7 +105,7 @@ def downloadJava(tmpDirPath: pathlib.Path, lspCliDirPath: pathlib.Path,
       "--output", str(javaTargetDirPath)])
 
   print("Removing JDK directory...")
-  shutil.rmtree(jdkDirPath)
+  shutil.rmtree(jdkDirPath, onerror=remove_readonly)
 
   return relativeJavaDirPathString
 
@@ -115,7 +117,9 @@ def getLspCliVersion() -> str:
     assert regexMatch is not None
     return regexMatch.group(1)
 
-
+def remove_readonly(func, path, _):
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 def main() -> None:
   createBinaryArchive("linux", "x64")

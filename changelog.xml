@@ -12,12 +12,15 @@
     <author>Julian Valentin, lsp-cli Development Community</author>
   </properties>
   <body>
-    <release version="2.0.0" date="2021-11-28">
+    <release version="2.0.0" date="upcoming">
       <action type="update">
-        Several dependencies
+        Update several dependencies
       </action>
       <action type="change">
         Fork from https://github.com/valentjn/lsp-cli
+      </action>
+      <action type="change">
+        Update to Java 21
       </action>
     </release>
     <release version="1.0.3" date="2021-11-28">
