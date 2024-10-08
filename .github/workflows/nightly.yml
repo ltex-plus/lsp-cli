@@ -23,7 +23,7 @@ jobs:
       - id: "check_latest_commit"
         name: "Check if there were any commits in the last 48 hours"
         if: ${{ github.event_name == 'schedule' }}
-        run: echo '::set-output name=NEW_COMMIT::'$(test -n "$(git log --format=%H --since='48 hours ago')" && echo 'true' || echo 'false')
+        run: echo NEW_COMMIT=$(test -n "$(git log --format=%H --since='48 hours ago')" && echo 'true' || echo 'false') >> $GITHUB_OUTPUT
 
   deploy:
     needs: check_latest_commit
