@@ -48,16 +48,16 @@ jobs:
       - name: "Install Python Dependencies"
         run: "python -m pip install --upgrade pip && pip install semver"
 
-      - name: "Set LSP_CLI_VERSION"
-        run: "echo \"LSP_CLI_VERSION=$(python -c \"import datetime; import re; print('{}.nightly.{}'.format(re.search(r'<version>(.*?)(?:\\\\.develop)?</version>', open('pom.xml', 'r').read()).group(1), datetime.datetime.today().strftime('%Y-%m-%d')), end='')\")\" >> $GITHUB_ENV"
+      - name: "Set LSP_CLI_PLUS_VERSION"
+        run: "echo \"LSP_CLI_PLUS_VERSION=$(python -c \"import datetime; import re; print('{}.nightly.{}'.format(re.search(r'<version>(.*?)(?:\\\\.develop)?</version>', open('pom.xml', 'r').read()).group(1), datetime.datetime.today().strftime('%Y-%m-%d')), end='')\")\" >> $GITHUB_ENV"
 
-      - name: "Check LSP_CLI_VERSION"
-        run: "if [[ -z \"$LSP_CLI_VERSION\" ]]; then echo 'Error: LSP_CLI_VERSION not set!'; (exit 1); fi; echo \"LSP_CLI_VERSION set to '$LSP_CLI_VERSION'\""
+      - name: "Check LSP_CLI_PLUS_VERSION"
+        run: "if [[ -z \"$LSP_CLI_PLUS_VERSION\" ]]; then echo 'Error: LSP_CLI_PLUS_VERSION not set!'; (exit 1); fi; echo \"LSP_CLI_PLUS_VERSION set to '$LSP_CLI_PLUS_VERSION'\""
 
       - name: "Bump Version"
-        run: "python -c \"import re\nfile = open('pom.xml', 'r+'); pom = file.read(); file.seek(0); file.truncate(); file.write(re.sub(r'<version>(.*?)</version>', '<version>${{ env.LSP_CLI_VERSION }}</version>', pom, 1))\""
+        run: "python -c \"import re\nfile = open('pom.xml', 'r+'); pom = file.read(); file.seek(0); file.truncate(); file.write(re.sub(r'<version>(.*?)</version>', '<version>${{ env.LSP_CLI_PLUS_VERSION }}</version>', pom, 1))\""
 
-      - name: "Build lsp-cli"
+      - name: "Build lsp-cli-plus"
         run: "mvn -B -e package"
 
       - name: "Create Binary Archives"
@@ -80,7 +80,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
           tag_name: "nightly"
-          name: "${{ env.LSP_CLI_VERSION }}"
+          name: "${{ env.LSP_CLI_PLUS_VERSION }}"
           prerelease:  true
           body: "This is a nightly build. Use at your own risk."
-          files: "target/lsp-cli-${{ env.LSP_CLI_VERSION }}.tar.gz\ntarget/lsp-cli-${{ env.LSP_CLI_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-${{ env.LSP_CLI_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-${{ env.LSP_CLI_VERSION }}-windows-x64.zip"
+          files: "target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip"

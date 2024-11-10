@@ -16,10 +16,10 @@
       <action type="update">
         Update several dependencies
       </action>
-      <action type="change">
+      <action type="update">
         Fork from https://github.com/valentjn/lsp-cli
       </action>
-      <action type="change">
+      <action type="update">
         Update to Java 21
       </action>
       <action type="add">
@@ -35,7 +35,7 @@
       </action>
     </release>
     <release version="1.0.2" date="2021-11-05">
-      <action type="fix" issue="ltex-ls#117">
+      <action type="fix" issue="valentjn/ltex-ls#117">
         Fix language server sometimes not terminated
       </action>
       <action type="fix">

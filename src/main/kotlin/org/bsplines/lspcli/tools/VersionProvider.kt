@@ -20,7 +20,7 @@ class VersionProvider : CommandLine.IVersionProvider {
 
     if (lspcliPackage != null) {
       val lspcliVersion: String? = lspcliPackage.implementationVersion
-      if (lspcliVersion != null) jsonObject.addProperty("lsp-cli", lspcliVersion)
+      if (lspcliVersion != null) jsonObject.addProperty("lsp-cli-plus", lspcliVersion)
     }
 
     val javaVersion: String? = System.getProperty("java.version")

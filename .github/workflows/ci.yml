@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Julian Valentin, lsp-cli Development Community
+# Copyright (C) 2021 Julian Valentin, lsp-cli-plus Development Community
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -39,7 +39,7 @@ jobs:
           distribution: "temurin"
           java-version: "21"
 
-      - name: "Build lsp-cli"
+      - name: "Build lsp-cli-plus"
         run: "mvn -B -e verify"
 
   validate:
@@ -93,14 +93,14 @@ jobs:
       - name: "Install Python Dependencies"
         run: "python -m pip install --upgrade pip && pip install semver"
 
-      - name: "Set LSP_CLI_VERSION"
-        run: "echo \"LSP_CLI_VERSION=$(python -c \"import re; print(re.search(r'<version>(.*?)</version>', open('pom.xml', 'r').read()).group(1), end='')\")\" >> $GITHUB_ENV"
+      - name: "Set LSP_CLI_PLUS_VERSION"
+        run: "echo \"LSP_CLI_PLUS_VERSION=$(python -c \"import re; print(re.search(r'<version>(.*?)</version>', open('pom.xml', 'r').read()).group(1), end='')\")\" >> $GITHUB_ENV"
 
-      - name: "Check LSP_CLI_VERSION"
-        run: "if [[ -z \"$LSP_CLI_VERSION\" ]]; then echo 'Error: LSP_CLI_VERSION not set!'; (exit 1); fi; echo \"LSP_CLI_VERSION set to '$LSP_CLI_VERSION'\""
+      - name: "Check LSP_CLI_PLUS_VERSION"
+        run: "if [[ -z \"$LSP_CLI_PLUS_VERSION\" ]]; then echo 'Error: LSP_CLI_PLUS_VERSION not set!'; (exit 1); fi; echo \"LSP_CLI_PLUS_VERSION set to '$LSP_CLI_PLUS_VERSION'\""
 
       - name: "Set LSP_CLI_IS_PRERELEASE"
-        run: "if [[ -z \"$LSP_CLI_VERSION\" ]]; then echo 'Error: LSP_CLI_VERSION not set!'; (exit 1); fi; echo \"LSP_CLI_IS_PRERELEASE=$(python -c \"import semver; print('true' if semver.VersionInfo.parse('$LSP_CLI_VERSION').prerelease is not None else 'false', end='')\")\" >> $GITHUB_ENV"
+        run: "if [[ -z \"$LSP_CLI_PLUS_VERSION\" ]]; then echo 'Error: LSP_CLI_PLUS_VERSION not set!'; (exit 1); fi; echo \"LSP_CLI_IS_PRERELEASE=$(python -c \"import semver; print('true' if semver.VersionInfo.parse('$LSP_CLI_PLUS_VERSION').prerelease is not None else 'false', end='')\")\" >> $GITHUB_ENV"
 
       - name: "Check LSP_CLI_IS_PRERELEASE"
         run: "if [[ -z \"$LSP_CLI_IS_PRERELEASE\" ]]; then echo 'Error: LSP_CLI_IS_PRERELEASE not set!'; (exit 1); fi; echo \"LSP_CLI_IS_PRERELEASE set to '$LSP_CLI_IS_PRERELEASE'\""
@@ -108,7 +108,7 @@ jobs:
       - name: "Set LSP_CLI_CHANGELOG"
         run: "if [ \"$LSP_CLI_IS_PRERELEASE\" = \"false\" ]; then echo \"LSP_CLI_CHANGELOG<<EOF\" >> $GITHUB_ENV; python tools/convertChangelog.py --xml-file changelog.xml --version latest >> $GITHUB_ENV; echo \"EOF\" >> $GITHUB_ENV; else echo \"LSP_CLI_CHANGELOG=This is a pre-release. Use at your own risk.\" >> $GITHUB_ENV; fi"
 
-      - name: "Build lsp-cli"
+      - name: "Build lsp-cli-plus"
         run: "mvn -B -e package"
 
       - name: "Create Binary Archives"
@@ -120,4 +120,4 @@ jobs:
           token: "${{ secrets.LSP_CLI_CREATE_GITHUB_RELEASE_TOKEN }}"
           prerelease: "${{ env.LSP_CLI_IS_PRERELEASE }}"
           body: "${{ env.LSP_CLI_CHANGELOG }}"
-          files: "target/lsp-cli-${{ env.LSP_CLI_VERSION }}.tar.gz\ntarget/lsp-cli-${{ env.LSP_CLI_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-${{ env.LSP_CLI_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-${{ env.LSP_CLI_VERSION }}-windows-x64.zip"
+          files: "target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip"

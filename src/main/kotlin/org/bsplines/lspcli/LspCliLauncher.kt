@@ -22,11 +22,11 @@ import java.util.logging.Level
 import kotlin.system.exitProcess
 
 @CommandLine.Command(
-  name = "lsp-cli",
+  name = "lsp-cli-plus",
   mixinStandardHelpOptions = true,
   showDefaultValues = true,
   versionProvider = VersionProvider::class,
-  description = ["lsp-cli - CLI language client for LSP language servers"],
+  description = ["lsp-cli-plus - CLI language client for LSP language servers"],
 )
 class LspCliLauncher : Callable<Int> {
   @CommandLine.Option(
@@ -37,7 +37,7 @@ class LspCliLauncher : Callable<Int> {
       "Required. Command line to start the language server, starting with the path of its " +
         "executable. If you want to supply arguments to the language server, separate them with " +
         "spaces. If the path of the executable or one of the arguments contain spaces, you can " +
-        "escape them by using '\\ ' instead. In .lsp-cli.json, this option can either be " +
+        "escape them by using '\\ ' instead. In .lsp-cli-plus.json, this option can either be " +
         "specified as an array of arguments or as a string with space-separated arguments.",
     ],
   )
@@ -50,7 +50,7 @@ class LspCliLauncher : Callable<Int> {
     paramLabel = "<directory>",
     description = [
       "Working directory for --server-command-line. If omitted, use the parent directory of " +
-        "`.lsp-cli.json` if given, otherwise use the current working directory.",
+        "`.lsp-cli-plus.json` if given, otherwise use the current working directory.",
     ],
   )
   var serverWorkingDirPath: Path? = null
@@ -249,7 +249,7 @@ class LspCliLauncher : Callable<Int> {
       } else if (path.toFile().isFile) {
         path
       } else if (path.toFile().isDirectory) {
-        val filePath: Path = path.resolve(".lsp-cli.json")
+        val filePath: Path = path.resolve(".lsp-cli-plus.json")
         if (filePath.toFile().isFile) filePath else null
       } else {
         null
@@ -289,7 +289,7 @@ class LspCliLauncher : Callable<Int> {
       }
 
       val commandLine = CommandLine(commandSpec)
-      commandLine.commandName = lspCliSettings.getValue("programName")?.asString ?: "lsp-cli"
+      commandLine.commandName = lspCliSettings.getValue("programName")?.asString ?: "lsp-cli-plus"
       commandLine.isCaseInsensitiveEnumValuesAllowed = true
 
       return commandLine

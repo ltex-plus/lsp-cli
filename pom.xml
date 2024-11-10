@@ -12,12 +12,12 @@
   <artifactId>lspcli</artifactId>
   <version>2.0.0-alpha</version>
   <name>${project.groupId}:${project.artifactId}</name>
-  <description>lsp-cli: CLI language client for LSP language servers</description>
-  <url>https://github.com/valentjn/lsp-cli</url>
+  <description>lsp-cli-plus: CLI language client for LSP language servers</description>
+  <url>https://github.com/ltex-plus/lsp-cli-plus</url>
   <scm>
-    <connection>scm:git:git://github.com/valentjn/lsp-cli.git</connection>
-    <developerConnection>scm:git:ssh://github.com:valentjn/lsp-cli.git</developerConnection>
-    <url>https://github.com/valentjn/lsp-cli/tree/develop</url>
+    <connection>scm:git:git://github.com/ltex-plus/lsp-cli-plus.git</connection>
+    <developerConnection>scm:git:ssh://github.com:ltex-plus/lsp-cli-plus.git</developerConnection>
+    <url>https://github.com/ltex-plus/lsp-cli-plus/tree/develop</url>
   </scm>
   <developers>
     <developer>
@@ -195,7 +195,7 @@
           <programs>
             <program>
               <mainClass>${main.class}</mainClass>
-              <id>lsp-cli</id>
+              <id>lsp-cli-plus</id>
             </program>
           </programs>
           <projectArtifactFirstInClassPath>true</projectArtifactFirstInClassPath>
@@ -236,8 +236,8 @@
             <id>patch-bin-scripts</id>
             <configuration>
               <target>
-                <chmod file="target/appassembler/bin/lsp-cli" perm="755"/>
-                <replace file="target/appassembler/bin/lsp-cli.bat">
+                <chmod file="target/appassembler/bin/lsp-cli-plus" perm="755"/>
+                <replace file="target/appassembler/bin/lsp-cli-plus.bat">
                   <replacetoken>if "%JAVACMD%"=="" set JAVACMD=java</replacetoken>
                   <replacevalue><![CDATA[if "%JAVACMD%" NEQ "" goto init
 
@@ -272,11 +272,11 @@ goto error
 
 :init]]></replacevalue>
                 </replace>
-                <replace file="target/appassembler/bin/lsp-cli.bat">
+                <replace file="target/appassembler/bin/lsp-cli-plus.bat">
                   <replacetoken>%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH%</replacetoken>
                   <replacevalue>"%JAVACMD%" %JAVA_OPTS%  -classpath %CLASSPATH%</replacevalue>
                 </replace>
-                <replace file="target/appassembler/bin/lsp-cli.bat">
+                <replace file="target/appassembler/bin/lsp-cli-plus.bat">
                   <replacetoken>set ERROR_CODE=%ERRORLEVEL%</replacetoken>
                   <replacevalue>set ERROR_CODE=%ERRORLEVEL%
 if %ERROR_CODE% EQU 0 set ERROR_CODE=1</replacevalue>
@@ -305,7 +305,7 @@ if %ERROR_CODE% EQU 0 set ERROR_CODE=1</replacevalue>
           <descriptors>
             <descriptor>.assembly.xml</descriptor>
           </descriptors>
-          <finalName>lsp-cli-${project.version}</finalName>
+          <finalName>lsp-cli-plus-${project.version}</finalName>
           <appendAssemblyId>false</appendAssemblyId>
         </configuration>
         <executions>

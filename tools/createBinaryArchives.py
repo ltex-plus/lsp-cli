@@ -27,26 +27,26 @@ def createBinaryArchive(platform: str, arch: str) -> None:
   lspCliVersion = getLspCliVersion()
   targetDirPath = pathlib.Path(__file__).parent.parent.joinpath("target")
   lspCliArchivePath = pathlib.Path(__file__).parent.parent.joinpath(
-      targetDirPath, f"lsp-cli-{lspCliVersion}.tar.gz")
+      targetDirPath, f"lsp-cli-plus-{lspCliVersion}.tar.gz")
 
   with tempfile.TemporaryDirectory() as tmpDirPathStr:
     tmpDirPath = pathlib.Path(tmpDirPathStr)
 
-    print("Extracting lsp-cli archive...")
+    print("Extracting lsp-cli-plus archive...")
     with tarfile.open(lspCliArchivePath, "r:gz") as tarFile: tarFile.extractall(path=tmpDirPath)
 
-    lspCliDirPath = tmpDirPath.joinpath(f"lsp-cli-{lspCliVersion}")
+    lspCliDirPath = tmpDirPath.joinpath(f"lsp-cli-plus-{lspCliVersion}")
     relativeJavaDirPath = downloadJava(tmpDirPath, lspCliDirPath, platform, arch)
 
     print("Setting default for JAVA_HOME in startup script...")
 
     if platform == "windows":
-      lspCliDirPath.joinpath("bin", "lsp-cli").unlink()
-      binScriptPath = lspCliDirPath.joinpath("bin", "lsp-cli.bat")
+      lspCliDirPath.joinpath("bin", "lsp-cli-plus").unlink()
+      binScriptPath = lspCliDirPath.joinpath("bin", "lsp-cli-plus.bat")
       searchPattern = re.compile("^set REPO=.*$", flags=re.MULTILINE)
     else:
-      lspCliDirPath.joinpath("bin", "lsp-cli.bat").unlink()
-      binScriptPath = lspCliDirPath.joinpath("bin", "lsp-cli")
+      lspCliDirPath.joinpath("bin", "lsp-cli-plus.bat").unlink()
+      binScriptPath = lspCliDirPath.joinpath("bin", "lsp-cli-plus")
       searchPattern = re.compile("^BASEDIR=.*$", flags=re.MULTILINE)
 
     with open(binScriptPath, "r") as file: binScript = file.read()
@@ -64,7 +64,7 @@ def createBinaryArchive(platform: str, arch: str) -> None:
     lspCliBinaryArchiveFormat = ("zip" if platform == "windows" else "gztar")
     lspCliBinaryArchiveExtension = (".zip" if platform == "windows" else ".tar.gz")
     lspCliBinaryArchivePath = targetDirPath.joinpath(
-        f"lsp-cli-{lspCliVersion}-{platform}-{arch}")
+        f"lsp-cli-plus-{lspCliVersion}-{platform}-{arch}")
     print(f"Creating binary archive '{lspCliBinaryArchivePath}{lspCliBinaryArchiveExtension}'...")
     shutil.make_archive(str(lspCliBinaryArchivePath), lspCliBinaryArchiveFormat,
         root_dir=tmpDirPath)
