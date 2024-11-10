@@ -204,9 +204,14 @@ class Checker(
       val lines: String = text.substring(linesStartPos, linesEndPos)
 
       println(
-        Ansi.ansi().a(lines.substring(0, fromPos - linesStartPos)).bold().fg(color)
-        .a(lines.substring(fromPos - linesStartPos, toPos - linesStartPos)).reset()
-        .a(lines.substring(toPos - linesStartPos).replaceFirst(TRAILING_WHITESPACE_REGEX, "")),
+        Ansi
+          .ansi()
+          .a(lines.substring(0, fromPos - linesStartPos))
+          .bold()
+          .fg(color)
+          .a(lines.substring(fromPos - linesStartPos, toPos - linesStartPos))
+          .reset()
+          .a(lines.substring(toPos - linesStartPos).replaceFirst(TRAILING_WHITESPACE_REGEX, "")),
       )
 
       var indentationSize = guessIndentationSize(text, linesStartPos, fromPos, terminalWidth)

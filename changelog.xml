@@ -25,6 +25,9 @@
       <action type="add">
         Add support for Typst
       </action>
+      <action type="fix" issue="valentjn/ltex-ls#303" due-to="@michaelvanstraten">
+        Fix StringIndexOutOfBoundsException
+      </action>
     </release>
     <release version="1.0.3" date="2021-11-28">
       <action type="update">
