@@ -117,7 +117,6 @@ jobs:
       - name: "Create GitHub Release"
         uses: "softprops/action-gh-release@v2"
         with:
-          token: "${{ secrets.LSP_CLI_CREATE_GITHUB_RELEASE_TOKEN }}"
           prerelease: "${{ env.LSP_CLI_IS_PRERELEASE }}"
           body: "${{ env.LSP_CLI_CHANGELOG }}"
           files: "target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip"
