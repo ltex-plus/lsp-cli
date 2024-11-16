@@ -25,6 +25,9 @@
       <action type="add">
         Add support for Typst
       </action>
+      <action type="add">
+        Add support for MDX
+      </action>
       <action type="fix" issue="valentjn/ltex-ls#303" due-to="@michaelvanstraten">
         Fix StringIndexOutOfBoundsException
       </action>
