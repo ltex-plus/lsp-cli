@@ -219,7 +219,7 @@ class LspCliLauncher : Callable<Int> {
 
         val launcher = LspCliLauncher(parseResult, lspCliSettings)
         val exitCode: Int = launcher.call()
-        if (exitCode != 0) exitProcess(exitCode)
+        exitProcess(exitCode)
       } catch (e: CommandLine.ParameterException) {
         commandLine.err.println(e.message)
 
