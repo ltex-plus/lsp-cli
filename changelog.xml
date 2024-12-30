@@ -12,6 +12,17 @@
     <author>Julian Valentin, lsp-cli Development Community</author>
   </properties>
   <body>
+    <release version="2.1.0" date="upcoming">
+      <action type="add" issue="ltex-plus/ltex-ls-plus#55">
+        Add support for Neorg
+      </action>
+      <action type="add" issue="ltex-plus/vscode-ltex-plus#88">
+        Add support for MDX (LSP language ID `mdx`)
+      </action>
+      <action type="fix" issue="#20">
+        Fix endless running process if there is no spelling error
+      </action>
+    </release>
     <release version="2.0.0" date="2024-11-10">
       <action type="update">
         Update several dependencies
@@ -22,11 +33,8 @@
       <action type="update">
         Update to Java 21
       </action>
-      <action type="add">
-        Add support for Typst
-      </action>
-      <action type="add">
-        Add support for MDX
+      <action type="add" issue="ltex-plus/ltex-ls-plus#39,ltex-plus/vscode-ltex-plus#49">
+        Add support for Typst (LSP language ID `typst`)
       </action>
       <action type="fix" issue="valentjn/ltex-ls#303" due-to="@michaelvanstraten">
         Fix StringIndexOutOfBoundsException
