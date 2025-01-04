@@ -11,7 +11,6 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.StandardOpenOption
 
 object FileIo {
   fun readFile(filePath: Path): String? =
@@ -24,31 +23,6 @@ object FileIo {
 
   fun readFileWithException(filePath: Path): String =
     String(Files.readAllBytes(filePath), StandardCharsets.UTF_8)
-
-  fun writeFile(
-    filePath: Path,
-    text: String,
-  ) {
-    try {
-      writeFileWithException(filePath, text)
-    } catch (e: IOException) {
-      Logging.logger.warning(I18n.format("couldNotWriteFile", e, filePath.toString()))
-    }
-  }
-
-  fun writeFileWithException(
-    filePath: Path,
-    text: String,
-  ) {
-    Files.write(
-      filePath,
-      text.toByteArray(StandardCharsets.UTF_8),
-      StandardOpenOption.CREATE,
-      StandardOpenOption.TRUNCATE_EXISTING,
-      StandardOpenOption.WRITE,
-      StandardOpenOption.SYNC,
-    )
-  }
 
   @Suppress("ComplexCondition", "ComplexMethod", "LongMethod")
   fun getCodeLanguageIdFromPath(path: Path): String? {

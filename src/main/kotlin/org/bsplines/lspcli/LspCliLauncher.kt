@@ -196,8 +196,14 @@ class LspCliLauncher : Callable<Int> {
     private val NON_ESCAPED_SPACE_REGEX = Regex(NON_ESCAPED_SPACE_REGEX_STRING)
 
     @JvmStatic
-    @Suppress("PrintStackTrace", "SpreadOperator", "TooGenericExceptionCaught")
     fun main(arguments: Array<String>) {
+      val exitCode = run(arguments)
+      exitProcess(exitCode)
+    }
+
+    @JvmStatic
+    @Suppress("PrintStackTrace", "SpreadOperator", "TooGenericExceptionCaught")
+    fun run(arguments: Array<String>): Int {
       AnsiConsole.systemInstall()
 
       val lspCliSettingsFilePath: Path? = getLspCliSettingsFilePath()
@@ -211,15 +217,15 @@ class LspCliLauncher : Callable<Int> {
 
         if (parseResult.isUsageHelpRequested) {
           commandLine.usage(commandLine.out)
-          exitProcess(commandSpec.exitCodeOnUsageHelp())
+          return commandSpec.exitCodeOnUsageHelp()
         } else if (parseResult.isVersionHelpRequested) {
           commandLine.printVersionHelp(commandLine.out)
-          exitProcess(commandSpec.exitCodeOnVersionHelp())
+          return commandSpec.exitCodeOnVersionHelp()
         }
 
         val launcher = LspCliLauncher(parseResult, lspCliSettings)
         val exitCode: Int = launcher.call()
-        exitProcess(exitCode)
+        return exitCode
       } catch (e: CommandLine.ParameterException) {
         commandLine.err.println(e.message)
 
@@ -227,10 +233,10 @@ class LspCliLauncher : Callable<Int> {
           e.commandLine.usage(commandLine.err)
         }
 
-        exitProcess(commandSpec.exitCodeOnInvalidInput())
+        return commandSpec.exitCodeOnInvalidInput()
       } catch (e: Exception) {
         e.printStackTrace(commandLine.err)
-        exitProcess(commandSpec.exitCodeOnExecutionException())
+        return commandSpec.exitCodeOnExecutionException()
       }
     }
 
