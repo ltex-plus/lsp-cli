@@ -10,12 +10,12 @@
 <document xmlns="http://maven.apache.org/changes/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 https://maven.apache.org/xsd/changes-1.0.0.xsd">
   <properties>
     <title>Changelog</title>
-    <author>Julian Valentin, lsp-cli Development Community</author>
+    <author>Julian Valentin, Daniel Spitzer, lsp-cli-plus Development Community</author>
   </properties>
   <body>
-    <release version="2.1.0" date="upcoming">
+    <release version="2.1.0" date="2025-01-08">
       <action type="add" issue="ltex-plus/ltex-ls-plus#55">
-        Add support for Neorg
+        Add support for Neorg (LSP language ID `neorg`)
       </action>
       <action type="add" issue="ltex-plus/vscode-ltex-plus#88">
         Add support for MDX (LSP language ID `mdx`)
