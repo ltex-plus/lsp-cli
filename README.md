@@ -13,7 +13,7 @@
 
 Language servers written for the LSP can usually only be used with a language client, which is typically an editor like VS Code. With `lsp-cli-plus`, language servers can also be used on the command line. This allows you to harness the power of language servers for scripting, build pipelines, etc.
 
-Most [existing language servers](https://microsoft.github.io/language-server-protocol/implementors/servers/) should be supported, but `lsp-cli-plus` was created for [LT<sub>E</sub>X LS](https://github.com/valentjn/ltex-ls) (a language server for LanguageTool), which is primary use case of `lsp-cli-plus` and drives its development.
+Most [existing language servers](https://microsoft.github.io/language-server-protocol/implementors/servers/) should be supported, but `lsp-cli-plus` was created for [LT<sub>E</sub>X+ LS](https://github.com/ltex-plus/ltex-ls-plus) (a language server for LanguageTool), which is primary use case of `lsp-cli-plus` and drives its development.
 
 ## Features
 
@@ -36,7 +36,7 @@ If you'd like support for other LSP features as well, please open a feature requ
 
 1. Download the [latest release](https://github.com/ltex-plus/lsp-cli-plus/releases/latest) from GitHub.
    - It's recommended that you choose the archive corresponding to your platform (these archives are standalone, no Java installation necessary).
-   - If you choose the platform-independent file `lsp-cli-plus-VERSION.tar.gz`, then you need Java 11 or later on your computer.
+   - If you choose the platform-independent file `lsp-cli-plus-VERSION.tar.gz`, then you need Java 21 or later on your computer.
 2. Extract the archive to an arbitrary location on your computer.
 
 ## Startup
