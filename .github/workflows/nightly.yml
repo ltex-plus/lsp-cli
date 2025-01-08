@@ -13,8 +13,10 @@ on:
 
 jobs:
   check_latest_commit:
-    runs-on: "ubuntu-latest"
     name: "Check latest commit"
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: read
     outputs:
       NEW_COMMIT: ${{ steps.check_latest_commit.outputs.NEW_COMMIT }}
     steps:
@@ -30,7 +32,8 @@ jobs:
     if: ${{ needs.check_latest_commit.outputs.NEW_COMMIT == 'true' || github.event_name == 'workflow_dispatch' }}
     name: "Nightly - Deploy Job"
     runs-on: "ubuntu-latest"
-
+    permissions:
+      contents: write
     steps:
       - name: "Checkout Repository"
         uses: "actions/checkout@v4"
@@ -66,6 +69,7 @@ jobs:
 
       - name: "Delete Old Nightly Releases"
         run: "gh release delete nightly -y"
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -73,12 +77,13 @@ jobs:
         run: "git tag -f nightly && git push -f origin nightly"
 
       - name: "Create GitHub Release"
-        uses: "softprops/action-gh-release@v2"
+        run: >
+          gh release create nightly
+          --prerelease=true
+          --title='${{ env.LSP_CLI_PLUS_VERSION }}'
+          --notes='This is a nightly build. Use at your own risk.'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip'
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        with:
-          tag_name: "nightly"
-          name: "${{ env.LSP_CLI_PLUS_VERSION }}"
-          prerelease:  true
-          body: "This is a nightly build. Use at your own risk."
-          files: "target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

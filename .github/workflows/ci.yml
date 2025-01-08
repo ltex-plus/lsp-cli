@@ -22,6 +22,8 @@ jobs:
   build:
     name: "CI - Build Job"
     runs-on: "${{ matrix.os }}"
+    permissions:
+      contents: read
 
     strategy:
       matrix:
@@ -46,6 +48,8 @@ jobs:
   validate:
     name: "CI - Validate Job"
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: read
 
     steps:
       - name: "Checkout Repository"
@@ -75,6 +79,8 @@ jobs:
       - "validate"
     if: "${{ startsWith(github.ref, 'refs/tags/') }}"
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: write
 
     steps:
       - name: "Checkout Repository"
@@ -116,8 +122,13 @@ jobs:
         run: "python tools/createBinaryArchives.py"
 
       - name: "Create GitHub Release"
-        uses: "softprops/action-gh-release@v2"
-        with:
-          prerelease: "${{ env.LSP_CLI_IS_PRERELEASE }}"
-          body: "${{ env.LSP_CLI_CHANGELOG }}"
-          files: "target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz\ntarget/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip"
+        run: >
+          gh release create ${{ github.ref_name }}
+          --prerelease=${{ env.LSP_CLI_IS_PRERELEASE }}
+          --title='${{ env.LSP_CLI_PLUS_VERSION }}'
+          --notes='${{ env.LSP_CLI_CHANGELOG }}'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
