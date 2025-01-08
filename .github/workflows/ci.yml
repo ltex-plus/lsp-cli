@@ -127,6 +127,7 @@ jobs:
           --prerelease=${{ env.LSP_CLI_IS_PRERELEASE }}
           --title='${{ env.LSP_CLI_PLUS_VERSION }}'
           --notes='${{ env.LSP_CLI_CHANGELOG }}'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip'

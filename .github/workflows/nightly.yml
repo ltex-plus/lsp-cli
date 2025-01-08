@@ -82,6 +82,7 @@ jobs:
           --prerelease=true
           --title='${{ env.LSP_CLI_PLUS_VERSION }}'
           --notes='This is a nightly build. Use at your own risk.'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip'
