@@ -86,8 +86,8 @@ jobs:
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-x64.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-x64.tar.gz'
           'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-x64.zip'
-          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-aarch64.tar.gz'
-          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-aarch64.tar.gz'
-          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-aarch64.zip'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-linux-aarch64.tar.gz'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-mac-aarch64.tar.gz'
+          'target/lsp-cli-plus-${{ env.LSP_CLI_PLUS_VERSION }}-windows-aarch64.zip'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
