@@ -19,7 +19,7 @@ import zipfile
 import os
 import stat
 
-javaVersion = "21.0.4+7"
+javaVersion = "21.0.5+11"
 
 
 
@@ -102,7 +102,7 @@ def downloadJava(tmpDirPath: pathlib.Path, lspCliDirPath: pathlib.Path,
 
   print("Creating Java distribution...")
   subprocess.run(["jlink", "--module-path", str(jmodsDirPath), "--add-modules", "java.se",
-      "--strip-debug", "--no-man-pages", "--no-header-files", "--compress=2",
+      "--strip-debug", "--no-man-pages", "--no-header-files", "--compress=zip-6",
       "--output", str(javaTargetDirPath)])
 
   print("Removing JDK directory...")
@@ -126,6 +126,9 @@ def main() -> None:
   createBinaryArchive("linux", "x64")
   createBinaryArchive("mac", "x64")
   createBinaryArchive("windows", "x64")
+  createBinaryArchive("linux", "aarch64")
+  createBinaryArchive("mac", "aarch64")
+  createBinaryArchive("windows", "aarch64")
 
 
 if __name__ == "__main__":
