@@ -9,6 +9,9 @@
 
 # Acknowledgments
 
+Until version 1.0.3, Julian Valentin developed `lsp-cli-plus` as [lsp-cli](https://github.com/valentjn/lsp-cli). 
+This language client would not have been possible without the work of Julian Valentin.
+
 lsp-cli uses third-party libraries or other resources that may be distributed under licenses different from itself.
 
 In the event that we accidentally failed to list a required notice, please bring it to our attention by opening an issue or pull request.

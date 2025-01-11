@@ -15,6 +15,9 @@ Language servers written for the LSP can usually only be used with a language cl
 
 Most [existing language servers](https://microsoft.github.io/language-server-protocol/implementors/servers/) should be supported, but `lsp-cli-plus` was created for [LT<sub>E</sub>X+ LS](https://github.com/ltex-plus/ltex-ls-plus) (a language server for LanguageTool), which is primary use case of `lsp-cli-plus` and drives its development.
 
+Until version 1.0.3, Julian Valentin developed `lsp-cli-plus` as [lsp-cli](https://github.com/valentjn/lsp-cli). 
+This language client would not have been possible without the work of Julian Valentin.
+
 ## Features
 
 - Printing diagnostics (linting) for each checked file
